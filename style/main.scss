@@ -1,0 +1,8 @@
+@use "./content.scss";
+@use "./sidebar.scss";
+@use "./reset.scss";
+
+body {
+  font-family: sans-serif;
+  overflow: auto;
+}
