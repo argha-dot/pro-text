@@ -11,6 +11,7 @@ pub fn SideItem(
     #[prop(into)]
     val: RwSignal<NoteMetadata>,
     /// The current selected note
+    #[prop(into, default = None)]
     current_selected: Option<String>,
 ) -> impl IntoView {
     let note_title = move || {
@@ -38,7 +39,9 @@ pub fn SideItem(
     let on_click = move |_| set_current(Some(val.get().id));
 
     view! {
-        <li on:click=on_click class=class>{note_title}</li>
+        <li class=class>
+            <A href=val.get().id on:click=on_click>{note_title}</A>
+        </li>
     }
 }
 
@@ -48,10 +51,15 @@ pub fn Sidebar() -> impl IntoView {
 
     let (note_state, set_note_state) = use_get_note_metadatas();
     let notes = move || note_state.get().note_metadatas;
+    let input_element = create_node_ref();
 
     let _ = watch(
         move || add_note.version().get(),
-        move |_, _, _| set_note_state(get_all_note_metadatas()),
+        move |_, _, _| {
+            set_note_state(get_all_note_metadatas());
+            let node: HtmlElement<html::Input> = input_element.get().expect("input_ref not loaded");
+            node.set_value("");
+        },
         false,
     );
 
@@ -82,14 +90,17 @@ pub fn Sidebar() -> impl IntoView {
                         })
 
                     }
-                </Transition>
-                <li>
-                    <MultiActionForm class="sidebar__form" action=add_note>
-                        <input class="sidebar__form__input" type="text" name="title" />
+                    <li>
+                        <MultiActionForm
+                            class="sidebar__form"
+                            action=add_note
+                        >
+                            <input _ref=input_element class="sidebar__form__input" type="text" name="title" />
 
-                        <button class="sidebar__form__button" type="submit">"+"</button>
-                    </MultiActionForm>
-                </li>
+                            <button class="sidebar__form__button" type="submit">"+"</button>
+                        </MultiActionForm>
+                    </li>
+                </Transition>
             </ul>
         </aside>
     }

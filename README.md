@@ -1,81 +1,56 @@
-<picture>
-    <source srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_Solid_White.svg" media="(prefers-color-scheme: dark)">
-    <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
-</picture>
+# Pro(tected) Text
 
-# Leptos Axum Starter Template
+This is a clone of [ProtectedText](https://www.protectedtext.com/) written in rust and [Leptos](https://leptos.dev/).
 
-This is a template for use with the [Leptos](https://github.com/leptos-rs/leptos) web framework and the [cargo-leptos](https://github.com/akesson/cargo-leptos) tool using [Axum](https://github.com/tokio-rs/axum).
+## Todo
 
-## Creating your template repo
+- [x] Create Basic UI for notes and sidebar.
+- [x] Create the Notes Schema.
+- [x] Get sqlx up and running.
+- [x] Create basic server functions for getting note, getting all note metadatas and creating note.
+- [x] Extend the sidebar with an input form to create notes and a list of notes.
+- [x] Create the router, right now without any user, and make it navigatable.
+- [ ] Make the text editable and save it in the database so that it functions at least like a notepad thingy for now.
+- [ ] USER
+  - [ ] Create the User Schema, table, api routes and such
+  - [ ] The User and Note relationship and such
+  - [ ] Extend the router with the user stuff
+  - [ ] The URL will be something like `https://{ROOT_URL}/{USERNAME}/{NOTE_ID}`
+  - [ ] Option to create a new user if the URL isn't already taken
+  - [ ] Set Password and Option to make it open i.e. set no password
+- [ ] The whole password authentication thing
+  - [ ] Encrypt notes and the username with the password.
+    > this is stored in the database.
+  - [ ] When the user tries to access the note, fetch the username hash, and ask for the password.
+  - [ ] Decrypt the username hash with the password taken from the user, and compare it to the username which is known from the url of the site.
+  - [ ] If the decrypted username and the actual username match, fetch the list of notes and everything and decrypt it using the password.
+    > For now I'm storing the password in a global app state, so that whenerer the page is refreshed or the tab is closed, the user has to login again, but the password is NOT stored in a cookie or local storage. Storing the password this way should not be a security risk, but I'll need to verify it somehow.
+- [ ] Add ability to delete a Note.
 
-If you don't have `cargo-leptos` installed you can install it with
+### Extra Stuff
 
-```bash
-cargo install cargo-leptos
-```
-
-Then run
-```bash
-cargo leptos new --git leptos-rs/start-axum
-```
-
-to generate a new project template.
-
-```bash
-cd pro-text
-```
-
-to go to your newly created project.  
-Feel free to explore the project structure, but the best place to start with your application code is in `src/app.rs`.  
-Addtionally, Cargo.toml may need updating as new versions of the dependencies are released, especially if things are not working after a `cargo update`.
-
-## Running your project
-
-```bash
-cargo leptos watch
-```
-
-## Installing Additional Tools
-
-By default, `cargo-leptos` uses `nightly` Rust, `cargo-generate`, and `sass`. If you run into any trouble, you may need to install one or more of these tools.
-
-1. `rustup toolchain install nightly --allow-downgrade` - make sure you have Rust nightly
-2. `rustup target add wasm32-unknown-unknown` - add the ability to compile Rust to WebAssembly
-3. `cargo install cargo-generate` - install `cargo-generate` binary (should be installed automatically in future)
-4. `npm install -g sass` - install `dart-sass` (should be optional in future
-
-## Compiling for Release
-```bash
-cargo leptos build --release
-```
-
-Will generate your server binary in target/server/release and your site package in target/site
-
-## Testing Your Project
-```bash
-cargo leptos end-to-end
-```
-
-```bash
-cargo leptos end-to-end --release
-```
-
-Cargo-leptos uses Playwright as the end-to-end test tool.  
-Tests are located in end2end/tests directory.
+- [ ] Make the note downloadable.
+- [ ] Make importing notes a thing.
+- [ ] Make it save stuff as you type.
+- [ ] Replace the default fetching thing with [leptos_query](https://leptos-query-demo.vercel.app/).
+- [ ] Replace the giant textbox with something like what [notion](https://notion.so) does.
 
 ## Executing a Server on a Remote Machine Without the Toolchain
+
 After running a `cargo leptos build --release` the minimum files needed are:
 
 1. The server binary located in `target/server/release`
 2. The `site` directory and all files within located in `target/site`
 
 Copy these files to your remote server. The directory structure should be:
+
 ```text
 pro-text
 site/
 ```
+
 Set the following environment variables (updating for your project as needed):
+
 ```text
 LEPTOS_OUTPUT_NAME="pro-text"
 LEPTOS_SITE_ROOT="site"
@@ -83,4 +58,5 @@ LEPTOS_SITE_PKG_DIR="pkg"
 LEPTOS_SITE_ADDR="127.0.0.1:3000"
 LEPTOS_RELOAD_PORT="3001"
 ```
+
 Finally, run the server binary.

@@ -15,7 +15,8 @@ pub enum AuthState {
     #[default]
     LoggedOut,
     LoggedIn {
-        password: String,
+        username: String,
+        username_hash: String,
     },
 }
 

@@ -18,6 +18,19 @@ pub async fn get_notes() -> Result<Vec<Note>, ServerFnError> {
     Ok(notes)
 }
 
+#[server]
+pub async fn get_note(id: String) -> Result<Note, ServerFnError> {
+    use crate::utils::ssr::*;
+
+    let mut conn = db().await?;
+    let row = sqlx::query_as::<_, Note>("SELECT * FROM notes WHERE id = $1")
+        .bind(id)
+        .fetch_one(&mut conn);
+
+    Ok(row.await?)
+    // while let Some()
+}
+
 #[server(GetNoteMetada)]
 pub async fn get_notes_metadata() -> Result<Vec<NoteMetadata>, ServerFnError> {
     use crate::utils::ssr::*;
@@ -37,11 +50,13 @@ pub async fn get_notes_metadata() -> Result<Vec<NoteMetadata>, ServerFnError> {
 #[server(AddNote)]
 pub async fn add_note(title: String) -> Result<(), ServerFnError> {
     use crate::utils::ssr::*;
+    use leptos_axum::redirect;
     use uuid::Uuid;
 
     let mut conn = db().await?;
     let uid = Uuid::new_v4().to_string();
 
+    redirect(format!("{}", uid.clone()).as_str());
     match sqlx::query("INSERT INTO notes (id,title,note) VALUES ($1, $2, '')")
         .bind(uid)
         .bind(title)

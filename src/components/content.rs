@@ -1,4 +1,7 @@
 use leptos::{ev::Event, *};
+use leptos_router::*;
+
+use crate::api::get_note;
 
 #[component]
 fn NoteBody(
@@ -35,13 +38,25 @@ pub fn NoteTitle(#[prop(into)] title: RwSignal<String>) -> impl IntoView {
 
 #[component]
 pub fn NoteMain() -> impl IntoView {
-    let data = create_rw_signal("Hello".to_owned());
-    let title = create_rw_signal("Title".to_owned());
+    let params = use_params_map();
+    let note_id = move || params.with(|params| params.get("id").cloned().unwrap_or_default());
+
+    let note = create_resource(note_id, |note_id| get_note(note_id));
 
     view! {
         <article class="note__container">
-            <NoteTitle title=title />
-            <NoteBody body=data/>
+            <Transition fallback=move || view! {<p>"Loading..."</p>}>
+                {
+                    note.get().map(|note| match note {
+                        Err(e) => view! {<pre>"Server Error: " {e.to_string()}</pre>}.into_view(),
+                        Ok(note) => view! {
+                            <NoteTitle title=note.title />
+                            <NoteBody body=note.note/>
+                        }
+                        .into_view(),
+                    })
+                }
+            </Transition>
         </article>
     }
 }

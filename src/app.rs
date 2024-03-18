@@ -1,4 +1,7 @@
-use crate::error_template::{AppError, ErrorTemplate};
+use crate::{
+    components::NoteMain,
+    error_template::{AppError, ErrorTemplate},
+};
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -31,7 +34,10 @@ pub fn App() -> impl IntoView {
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage />
+                    <Route path="/" view=HomePage>
+                        <Route path=":id" view=NoteMain />
+                        <Route path="" view=|| view! { <div>"Select a note"</div> } />
+                    </Route>
                 </Routes>
             </main>
         </Router>
