@@ -67,3 +67,22 @@ pub async fn add_note(title: String) -> Result<(), ServerFnError> {
         Err(e) => Err(ServerFnError::ServerError(e.to_string())),
     }
 }
+
+#[server(SetTitle)]
+pub async fn update_note(id: String, title: String, note: String) -> Result<(), ServerFnError> {
+    use crate::utils::ssr::*;
+
+    let mut conn = db().await?;
+    println!("{} {}", id, title);
+
+    match sqlx::query("UPDATE notes SET title = $1,note = $2 WHERE id = $3")
+        .bind(title)
+        .bind(note)
+        .bind(id)
+        .execute(&mut conn)
+        .await
+    {
+        Ok(_row) => Ok(()),
+        Err(e) => Err(ServerFnError::ServerError(e.to_string())),
+    }
+}

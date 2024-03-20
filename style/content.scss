@@ -14,8 +14,20 @@
 }
 
 .note__heading {
-  background: transparent;
-  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > input {
+    flex: 0.9;
+    font-size: 2.5rem;
+    background: transparent;
+  }
+
+  & > button {
+    flex: 0.1;
+    height: 100%;
+  }
 }
 
 .note__body {
