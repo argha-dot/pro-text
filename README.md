@@ -12,7 +12,8 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
 - [x] Create the router, right now without any user, and make it navigatable.
   > The URL will now be something like `https://{ROOT_URL}/{NOTE_ID}`
 - [X] Make the text editable and save it in the database so that it functions at least like a notepad thingy for now.
-- [ ] Add ability to delete a Note.
+- [X] Replace the default fetching thing with [leptos_query](https://leptos-query-demo.vercel.app/).
+- [X] Add ability to delete a Note.
 - [ ] USER
   - [ ] Create the User Schema
     > The Working schema for now is
@@ -43,7 +44,6 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
 - [ ] Make the note downloadable.
 - [ ] Make importing notes a thing.
 - [ ] Make it save stuff as you type.
-- [ ] Replace the default fetching thing with [leptos_query](https://leptos-query-demo.vercel.app/).
 - [ ] Replace the giant textbox with something like what [notion](https://notion.so) does.
 
 ## Executing a Server on a Remote Machine Without the Toolchain

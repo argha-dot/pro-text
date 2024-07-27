@@ -4,6 +4,8 @@ use crate::{
 };
 use leptos::*;
 use leptos_meta::*;
+use leptos_query::*;
+use leptos_query_devtools::LeptosQueryDevtools;
 use leptos_router::*;
 
 use crate::note::*;
@@ -12,13 +14,13 @@ use crate::note::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    provide_query_client();
 
     view! {
-
-
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/pro-text.css"/>
+        <LeptosQueryDevtools />
 
         // sets the document title
         <Title text="Pro Text"/>
