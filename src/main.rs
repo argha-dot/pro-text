@@ -15,7 +15,7 @@ async fn main() {
     // Alternately a file can be specified such as Some("Cargo.toml")
     // The file would need to be included with the executable when moved to deployment
     let mut conn = db().await.expect("couldn't connect to the DB");
-    if let Err(e) = sqlx::migrate!().run(&mut conn).await {
+    if let Err(e) = sqlx::migrate!("./migrations").run(&mut conn).await {
         eprintln!("{e:?}")
     }
 

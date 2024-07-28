@@ -13,16 +13,18 @@ use crate::api::update_note;
 use crate::queries::get_all_note_metadatas_query;
 use crate::queries::get_note_query;
 use crate::queries::AllNoteMetadatasTag;
+use crate::utils::get_username;
 
 #[component]
 pub fn NoteMain() -> impl IntoView {
     let params = use_params_map();
+    let current_user = get_username();
 
     let note_id =
         Signal::derive(move || params.with(|params| params.get("id").cloned().unwrap_or_default()));
 
     let QueryResult { data, refetch, .. } =
-        get_note_query().use_query(move || note_id.get().clone());
+        get_note_query().use_query(move || (note_id.get().clone(), current_user.get().unwrap()));
 
     let note_title = create_rw_signal("".to_string());
     let note_body = create_rw_signal("".to_string());
@@ -45,14 +47,23 @@ pub fn NoteMain() -> impl IntoView {
         let notes_query = get_all_note_metadatas_query();
 
         async move {
-            note_query.cancel_query(id.clone());
-            notes_query.cancel_query(AllNoteMetadatasTag);
+            note_query.cancel_query((id.clone(), current_user.get().unwrap()));
+            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap()));
 
-            let res = update_note(id.clone(), note_title.get(), note_body.get()).await;
+            let res = update_note(
+                id.clone(),
+                note_title.get(),
+                note_body.get(),
+                current_user.get().unwrap_or_default(),
+            )
+            .await;
 
             if res.is_ok() {
-                note_query.invalidate_query(id.clone());
-                notes_query.invalidate_query(AllNoteMetadatasTag);
+                note_query.invalidate_query((id.clone(), current_user.get().unwrap_or_default()));
+                notes_query.invalidate_query((
+                    AllNoteMetadatasTag,
+                    current_user.get().unwrap_or_default(),
+                ));
                 refetch();
             }
         }
@@ -65,11 +76,13 @@ pub fn NoteMain() -> impl IntoView {
 
     view! {
         <form on:submit={on_save} class="note__container">
-            <Transition fallback=move || view! {<p>"Loading..."</p>}>
+            <Transition fallback=move || view! {<p class="note__container__error">"Loading..."</p>}>
                 {
                     move || data.get().map(|note| match note {
                         Err(e) => view! {
-                            <pre>"Server Error: " {e.to_string()}</pre>
+                            <pre class="note__container__error">
+                                "Server Error: " {e.to_string()}
+                            </pre>
                         }.into_view(),
                         Ok(note) => view! {
                             <input name="id" type="hidden" value={note.id} />

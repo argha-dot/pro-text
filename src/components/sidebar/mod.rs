@@ -5,6 +5,7 @@ pub use self::add_form::*;
 pub use self::item::*;
 use crate::api::delete_note;
 use crate::queries::get_note_query;
+use crate::utils::get_username;
 use leptos::*;
 use leptos_query::QueryResult;
 
@@ -15,9 +16,10 @@ use crate::utils::set_current_note;
 #[component]
 pub fn Sidebar() -> impl IntoView {
     let (current_note, set_current_note) = set_current_note();
+    let current_user = get_username();
 
-    let QueryResult { data, refetch, .. } =
-        get_all_note_metadatas_query().use_query(|| AllNoteMetadatasTag);
+    let QueryResult { data, refetch, .. } = get_all_note_metadatas_query()
+        .use_query(move || (AllNoteMetadatasTag, current_user.get().clone().unwrap()));
 
     let delete_note_action = create_action(move |id: &String| {
         let id = id.clone();
@@ -27,12 +29,12 @@ pub fn Sidebar() -> impl IntoView {
         let notes_query = get_all_note_metadatas_query();
 
         async move {
-            notes_query.cancel_query(AllNoteMetadatasTag);
+            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap()));
             set_current_note.set(None);
 
-            let _ = delete_note(id.clone()).await;
+            let _ = delete_note(id.clone(), current_user.get().unwrap()).await;
 
-            let _ = note_query.invalidate_query(id);
+            let _ = note_query.invalidate_query((id, current_user.get().unwrap()));
 
             refetch()
         }

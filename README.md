@@ -15,15 +15,16 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
 - [X] Replace the default fetching thing with [leptos_query](https://leptos-query-demo.vercel.app/).
 - [X] Add ability to delete a Note.
 - [ ] USER
-  - [ ] Create the User Schema
+  - [X] Create the User Schema
     > The Working schema for now is
     >
     > ```
     >   username: String,
     >   username_hash: String,
+    >   password: String
     > ```
-  - [ ] Create the user table, API routes etc.
-  - [ ] The User and Note relationship etc.
+  - [X] Create the user table, API routes etc.
+  - [X] The User and Note relationship etc.
   - [ ] Extend the router with the user stuff
     > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/{NOTE_ID}`
   - [ ] Option to create a new user if the URL isn't already taken
@@ -37,7 +38,7 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
     > For now I'm storing the password in a global app state, so that whenerer the page is refreshed or the tab is closed, the user has to login again, but the password is NOT stored in a cookie or local storage. Storing the password this way should not be a security risk, but I'll need to verify it somehow.
 
 ## FIX ME
- - [ ] The Flickering of the sidebar.
+ - [X] The Flickering of the sidebar.
 
 ### Extra Stuff
 

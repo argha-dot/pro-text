@@ -11,6 +11,11 @@
   flex-direction: column;
   flex-grow: 1;
   gap: 2rem;
+
+  &__error {
+    width: 100%;
+    text-wrap: wrap;
+  }
 }
 
 .note__heading {

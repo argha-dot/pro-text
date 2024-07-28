@@ -1,3 +1,4 @@
+use crate::utils::{AuthState, GlobalState};
 use crate::{
     components::NoteMain,
     error_template::{AppError, ErrorTemplate},
@@ -12,9 +13,19 @@ use crate::note::*;
 
 #[component]
 pub fn App() -> impl IntoView {
+    let note_state = create_rw_signal(GlobalState {
+        auth: AuthState::LoggedIn {
+            username: "user_id".to_string(),
+            username_hash: "".to_string(),
+            password: "".to_string(),
+        },
+        current_note: None,
+    });
+
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
     provide_query_client();
+    provide_context(note_state);
 
     view! {
         // injects a stylesheet into the document <head>

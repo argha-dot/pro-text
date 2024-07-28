@@ -9,18 +9,19 @@ use crate::{
 #[derive(Debug, Hash, Eq, PartialEq, Clone)]
 pub struct AllNotesTag;
 
-pub fn get_all_notes_query() -> QueryScope<AllNotesTag, Result<Vec<Note>, ServerFnError>> {
+pub fn get_all_notes_query() -> QueryScope<(AllNotesTag, String), Result<Vec<Note>, ServerFnError>>
+{
     create_query(
-        |_| async move { get_notes().await },
+        |(_, user_id)| async move { get_notes(user_id).await },
         QueryOptions {
             ..Default::default()
         },
     )
 }
 
-pub fn get_note_query() -> QueryScope<String, Result<Note, ServerFnError>> {
+pub fn get_note_query() -> QueryScope<(String, String), Result<Note, ServerFnError>> {
     create_query(
-        get_note,
+        |(id, user_id)| async move { get_note(id, user_id).await },
         QueryOptions {
             ..Default::default()
         },
@@ -31,9 +32,9 @@ pub fn get_note_query() -> QueryScope<String, Result<Note, ServerFnError>> {
 pub struct AllNoteMetadatasTag;
 
 pub fn get_all_note_metadatas_query(
-) -> QueryScope<AllNoteMetadatasTag, Result<Vec<NoteMetadata>, ServerFnError>> {
+) -> QueryScope<(AllNoteMetadatasTag, String), Result<Vec<NoteMetadata>, ServerFnError>> {
     create_query(
-        |_| async move { get_notes_metadata().await },
+        |(_, user_id)| async move { get_notes_metadata(user_id).await },
         QueryOptions {
             ..Default::default()
         },
