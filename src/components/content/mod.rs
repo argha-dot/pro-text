@@ -23,8 +23,12 @@ pub fn NoteMain() -> impl IntoView {
     let note_id =
         Signal::derive(move || params.with(|params| params.get("id").cloned().unwrap_or_default()));
 
-    let QueryResult { data, refetch, .. } =
-        get_note_query().use_query(move || (note_id.get().clone(), current_user.get().unwrap()));
+    let QueryResult { data, refetch, .. } = get_note_query().use_query(move || {
+        (
+            note_id.get().clone(),
+            current_user.get().unwrap_or_default(),
+        )
+    });
 
     let note_title = create_rw_signal("".to_string());
     let note_body = create_rw_signal("".to_string());
@@ -47,8 +51,8 @@ pub fn NoteMain() -> impl IntoView {
         let notes_query = get_all_note_metadatas_query();
 
         async move {
-            note_query.cancel_query((id.clone(), current_user.get().unwrap()));
-            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap()));
+            note_query.cancel_query((id.clone(), current_user.get().unwrap_or_default()));
+            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap_or_default()));
 
             let res = update_note(
                 id.clone(),

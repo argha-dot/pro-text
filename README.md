@@ -25,7 +25,7 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
     > ```
   - [X] Create the user table, API routes etc.
   - [X] The User and Note relationship etc.
-  - [ ] Extend the router with the user stuff
+  - [X] Extend the router with the user stuff
     > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/{NOTE_ID}`
   - [ ] Option to create a new user if the URL isn't already taken
   - [ ] Set Password and Option to make it open i.e. set no password
@@ -39,6 +39,7 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
 
 ## FIX ME
  - [X] The Flickering of the sidebar.
+ - [ ] The Login Form Input label thing
 
 ### Extra Stuff
 

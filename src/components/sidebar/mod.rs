@@ -18,8 +18,12 @@ pub fn Sidebar() -> impl IntoView {
     let (current_note, set_current_note) = set_current_note();
     let current_user = get_username();
 
-    let QueryResult { data, refetch, .. } = get_all_note_metadatas_query()
-        .use_query(move || (AllNoteMetadatasTag, current_user.get().clone().unwrap()));
+    let QueryResult { data, refetch, .. } = get_all_note_metadatas_query().use_query(move || {
+        (
+            AllNoteMetadatasTag,
+            current_user.get().clone().unwrap_or_default(),
+        )
+    });
 
     let delete_note_action = create_action(move |id: &String| {
         let id = id.clone();
@@ -29,14 +33,14 @@ pub fn Sidebar() -> impl IntoView {
         let notes_query = get_all_note_metadatas_query();
 
         async move {
-            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap()));
+            notes_query.cancel_query((AllNoteMetadatasTag, current_user.get().unwrap_or_default()));
             set_current_note.set(None);
 
-            let _ = delete_note(id.clone(), current_user.get().unwrap()).await;
+            let _ = delete_note(id.clone(), current_user.get().unwrap_or_default()).await;
 
-            let _ = note_query.invalidate_query((id, current_user.get().unwrap()));
+            let _ = note_query.invalidate_query((id, current_user.get().unwrap_or_default()));
 
-            refetch()
+            refetch();
         }
     });
 

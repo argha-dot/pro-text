@@ -1,4 +1,4 @@
-use crate::utils::{AuthState, GlobalState};
+use crate::utils::{is_logged_in, AuthState, GlobalState};
 use crate::{
     components::NoteMain,
     error_template::{AppError, ErrorTemplate},
@@ -9,23 +9,19 @@ use leptos_query::*;
 use leptos_query_devtools::LeptosQueryDevtools;
 use leptos_router::*;
 
-use crate::note::*;
+use crate::pages::*;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let note_state = create_rw_signal(GlobalState {
-        auth: AuthState::LoggedIn {
-            username: "user_id".to_string(),
-            username_hash: "".to_string(),
-            password: "".to_string(),
-        },
+    let global_state = create_rw_signal(GlobalState {
+        auth: AuthState::LoggedOut,
         current_note: None,
     });
 
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
     provide_query_client();
-    provide_context(note_state);
+    provide_context(global_state);
 
     view! {
         // injects a stylesheet into the document <head>
@@ -45,12 +41,30 @@ pub fn App() -> impl IntoView {
             }
             .into_view()
         }>
-            <main>
+            <main class="min-h-screen w-full bg-primary flex">
                 <Routes>
-                    <Route path="/" view=HomePage>
-                        <Route path=":id" view=NoteMain />
-                        <Route path="" view=|| view! { <div>"Select a note"</div> } />
-                    </Route>
+                    // Logged Out Routes
+                    <ProtectedRoute
+                        path={"/"}
+                        view={|| view! {<Outlet />}}
+                        redirect_path={"/login"}
+                        condition={move || is_logged_in().get()}
+                    >
+                        <Route path="/" view=NotesPage>
+                            <Route path=":id" view=NoteMain />
+                            <Route path="" view=|| view! { <div>"Select a note"</div> } />
+                        </Route>
+                    </ProtectedRoute>
+
+                    // Logged In Routes
+                    <ProtectedRoute
+                        path={"/"}
+                        view={|| view! {<Outlet />}}
+                        redirect_path={"/"}
+                        condition={move || !is_logged_in().get()}
+                    >
+                        <Route path="/login" view=LoginPage />
+                    </ProtectedRoute>
                 </Routes>
             </main>
         </Router>

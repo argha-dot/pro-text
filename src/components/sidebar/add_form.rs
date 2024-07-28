@@ -18,7 +18,8 @@ pub fn AddFormComponent() -> impl IntoView {
 
     create_effect(move |_| {
         if let Some(Ok(_)) = response.get() {
-            notes_query.invalidate_query((AllNoteMetadatasTag, current_user.get().unwrap()));
+            notes_query
+                .invalidate_query((AllNoteMetadatasTag, current_user.get().unwrap_or_default()));
             let node = input_element.get().expect("ref to be loaded");
             node.set_value("");
         }

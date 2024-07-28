@@ -9,7 +9,7 @@ pub mod api;
 pub mod models;
 
 pub mod components;
-pub mod note;
+pub mod pages;
 pub mod queries;
 
 #[cfg(feature = "hydrate")]

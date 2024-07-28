@@ -24,17 +24,24 @@ pub fn auth_state() -> (Signal<AuthState>, SignalSetter<AuthState>) {
     let (current_user, set_current_user) = create_slice(
         notes,
         |state: &GlobalState| state.auth.clone(),
-        |_: &mut GlobalState, _: AuthState| {},
+        |state: &mut GlobalState, auth_state: AuthState| {
+            state.auth = auth_state;
+        },
     );
 
     (current_user, set_current_user)
 }
 
+pub fn is_logged_in() -> Signal<bool> {
+    let global = use_context::<RwSignal<GlobalState>>().expect("global state to be provided");
+    Signal::derive(move || matches!(global.get().auth, AuthState::LoggedIn { .. }))
+}
+
 pub fn get_username() -> Signal<Option<String>> {
-    let notes = use_context::<RwSignal<GlobalState>>().expect("global state to be provided");
+    let global = use_context::<RwSignal<GlobalState>>().expect("global state to be provided");
 
     let (current_user, _) = create_slice(
-        notes,
+        global,
         |state: &GlobalState| {
             if let AuthState::LoggedIn { username, .. } = state.auth.clone() {
                 Some(username)
@@ -49,10 +56,10 @@ pub fn get_username() -> Signal<Option<String>> {
 }
 
 pub fn set_current_note() -> (Signal<Option<String>>, SignalSetter<Option<String>>) {
-    let notes = use_context::<RwSignal<GlobalState>>().expect("global state to be provided");
+    let global = use_context::<RwSignal<GlobalState>>().expect("global state to be provided");
 
     let (current_note, set_current_note) = create_slice(
-        notes,
+        global,
         |state: &GlobalState| state.current_note.clone(),
         |state: &mut GlobalState, note_id: Option<String>| state.current_note = note_id,
     );
