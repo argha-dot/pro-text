@@ -17,11 +17,12 @@ pub fn LoginPage() -> impl IntoView {
 
     let login_action = create_action(move |_: &()| {
         let navigate = navigate.clone();
+
         async move {
             let resp = login(user_name.get()).await;
+
             match resp {
                 Ok(user) => {
-                    logging::console_log(format!("{:?}", user).as_str());
                     set_auth_state.set(AuthState::LoggedIn {
                         username: user.username,
                         username_hash: "".to_string(),

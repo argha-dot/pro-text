@@ -15,13 +15,25 @@ use crate::queries::get_note_query;
 use crate::queries::AllNoteMetadatasTag;
 use crate::utils::get_username;
 
+#[derive(Params, PartialEq)]
+pub struct NoteParams {
+    note_id: String,
+}
+
 #[component]
 pub fn NoteMain() -> impl IntoView {
-    let params = use_params_map();
     let current_user = get_username();
 
-    let note_id =
-        Signal::derive(move || params.with(|params| params.get("id").cloned().unwrap_or_default()));
+    let params = use_params::<NoteParams>();
+    let note_id = Signal::derive(move || {
+        params.with(|params| {
+            params
+                .as_ref()
+                .map(|params| params.note_id.clone())
+                // Unwraping cause if the page is here, then
+                .unwrap()
+        })
+    });
 
     let QueryResult { data, refetch, .. } = get_note_query().use_query(move || {
         (
@@ -79,23 +91,31 @@ pub fn NoteMain() -> impl IntoView {
     };
 
     view! {
-        <form on:submit={on_save} class="note__container">
-            <Transition fallback=move || view! {<p class="note__container__error">"Loading..."</p>}>
-                {
-                    move || data.get().map(|note| match note {
-                        Err(e) => view! {
-                            <pre class="note__container__error">
-                                "Server Error: " {e.to_string()}
-                            </pre>
-                        }.into_view(),
-                        Ok(note) => view! {
-                            <input name="id" type="hidden" value={note.id} />
-                            <NoteTitle title={note_title} />
-                            <NoteBody body={note_body}/>
-                        }
-                        .into_view(),
-                    })
-                }
+        <form on:submit=on_save class="note__container">
+            <Transition fallback=move || {
+                view! { <p class="note__container__error">"Loading..."</p> }
+            }>
+                {move || {
+                    data.get()
+                        .map(|note| match note {
+                            Err(e) => {
+                                view! {
+                                    <pre class="note__container__error">
+                                        "Server Error: " {e.to_string()}
+                                    </pre>
+                                }
+                                    .into_view()
+                            }
+                            Ok(note) => {
+                                view! {
+                                    <input name="id" type="hidden" value=note.id />
+                                    <NoteTitle title=note_title />
+                                    <NoteBody body=note_body />
+                                }
+                                    .into_view()
+                            }
+                        })
+                }}
             </Transition>
         </form>
     }

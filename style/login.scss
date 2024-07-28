@@ -53,7 +53,8 @@
     padding: 0;
   }
 
-  &:focus-within {
+  &:focus-within, 
+  &.has-text {
     outline: 1px #9c9c9c solid;
 
     & > p {

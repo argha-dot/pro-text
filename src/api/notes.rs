@@ -28,9 +28,19 @@ pub async fn get_note(id: String, user_id: String) -> Result<Note, ServerFnError
     let row = sqlx::query_as::<_, Note>("SELECT * FROM notes WHERE id = $1 AND user_id = $2")
         .bind(id)
         .bind(user_id)
-        .fetch_one(&mut conn);
+        .fetch_one(&mut conn)
+        .await;
 
-    Ok(row.await?)
+    match row {
+        Ok(row) => {
+            logging::log!("{:?}", row);
+            Ok(row)
+        }
+        Err(e) => {
+            logging::log!("{:?}", e);
+            Err(ServerFnError::ServerError(e.to_string()))
+        }
+    }
     // while let Some()
 }
 

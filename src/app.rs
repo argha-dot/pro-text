@@ -51,7 +51,8 @@ pub fn App() -> impl IntoView {
                         condition={move || is_logged_in().get()}
                     >
                         <Route path="/" view=NotesPage>
-                            <Route path=":id" view=NoteMain />
+                            // <Route path=":user_id" view=|| view! {""} />
+                            <Route path=":note_id" view=NoteMain />
                             <Route path="" view=|| view! { <div>"Select a note"</div> } />
                         </Route>
                     </ProtectedRoute>
