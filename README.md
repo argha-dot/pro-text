@@ -21,7 +21,6 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
     > ```
     >   username: String,
     >   username_hash: String,
-    >   password: String
     > ```
   - [X] Create the user table, API routes etc.
   - [X] The User and Note relationship etc.
