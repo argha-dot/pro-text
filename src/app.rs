@@ -2,6 +2,7 @@ use crate::utils::{is_logged_in, AuthState, GlobalState};
 use crate::{
     components::NoteMain,
     error_template::{AppError, ErrorTemplate},
+    pages::UserProfile,
 };
 use leptos::*;
 use leptos_meta::*;
@@ -44,16 +45,22 @@ pub fn App() -> impl IntoView {
             <main class="min-h-screen w-full bg-primary flex">
                 <Routes>
                     // Logged Out Routes
+
                     <ProtectedRoute
                         path={"/"}
                         view={|| view! {<Outlet />}}
                         redirect_path={"/login"}
                         condition={move || is_logged_in().get()}
                     >
-                        <Route path="/" view=NotesPage>
-                            // <Route path=":user_id" view=|| view! {""} />
-                            <Route path=":note_id" view=NoteMain />
-                            <Route path="" view=|| view! { <div>"Select a note"</div> } />
+                        <Route data={move || 1usize} path="/" view={UserPage}>
+                            <Route data={move || 2usize} path=":user_id" view=|| view! { <Outlet/> }>
+                                <Route path="note" view=|| view! {<Outlet />}>
+                                    <Route path=":note_id" view=|| view! {<NoteMain />} />
+                                    <Route path="" view=|| view! {<div>"select note"</div>} />
+                                </Route>
+                                <Route path="" view={UserProfile} />
+                            </Route>
+                            <Route path="" view=|| view! {<div>"welcome"</div>} />
                         </Route>
                     </ProtectedRoute>
 

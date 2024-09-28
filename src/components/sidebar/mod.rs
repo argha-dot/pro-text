@@ -1,22 +1,28 @@
 mod add_form;
 mod item;
+mod user_card;
 
 pub use self::add_form::*;
 pub use self::item::*;
-use crate::api::delete_note;
-use crate::queries::get_note_query;
-use crate::utils::get_username;
+pub use self::user_card::*;
+
 use leptos::*;
 use leptos_query::QueryResult;
+use leptos_router::*;
 
-use crate::queries::get_all_note_metadatas_query;
-use crate::queries::AllNoteMetadatasTag;
-use crate::utils::set_current_note;
+use crate::api::delete_note;
+use crate::queries::{get_all_note_metadatas_query, get_note_query, AllNoteMetadatasTag};
+use crate::utils::{get_username, set_current_note};
 
 #[component]
 pub fn Sidebar() -> impl IntoView {
     let (current_note, set_current_note) = set_current_note();
     let current_user = get_username();
+
+    let navigate = use_navigate();
+    if current_user.get().is_none() {
+        navigate("/login", Default::default());
+    }
 
     let QueryResult { data, refetch, .. } = get_all_note_metadatas_query().use_query(move || {
         (
@@ -60,6 +66,7 @@ pub fn Sidebar() -> impl IntoView {
                     .map(|note| {
                         view! {
                             <SideItem
+                                current_user={Signal::derive(move || current_user.get().unwrap_or_default())}
                                 delete_note={delete_note_action}
                                 val=Signal::derive(move || note.clone())
                                 current_selected={Signal::derive(move || current_note.get())}
@@ -74,6 +81,7 @@ pub fn Sidebar() -> impl IntoView {
 
     view! {
         <aside class="sidebar">
+            <UserSidebarCard />
             <ul>
                 <Transition fallback=move || view! {<p style="background: red;">"Loading"</p>}>
                     {notes_list}

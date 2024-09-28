@@ -14,6 +14,10 @@
   border-right: 1px solid #88888850;
   padding: 1.5rem 7px;
 
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
   &--no_notes {
     color: $text-main;
   }
@@ -21,6 +25,33 @@
   &--error {
     color: $text-main;
   }
+
+  & > ul {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+.sidebar__user {
+  margin: 1rem;
+  height: 3rem;
+}
+
+.sidebar__user__card {
+  border: 1px white solid;
+  border-radius: 5px;
+  padding: 1rem;
+
+  color: $text-main;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar__item {
@@ -28,11 +59,13 @@
   color: $text-main;
   cursor: pointer;
   min-height: 2rem;
+  width: 100%;
 
   display: flex;
   align-items: center;
 
   padding-right: 1rem;
+
 
   & > a {
     width: 100%;

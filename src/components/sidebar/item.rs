@@ -1,5 +1,6 @@
 use crate::models::NoteMetadata;
 use crate::utils::set_current_note;
+
 use ev::SubmitEvent;
 use leptos::*;
 use leptos_router::*;
@@ -14,6 +15,9 @@ pub fn SideItem(
     current_selected: MaybeSignal<Option<String>>,
     /// On Delete
     delete_note: Action<String, ()>,
+    /// The User Id
+    #[prop(into)]
+    current_user: MaybeSignal<String>,
 ) -> impl IntoView {
     let note_title = move || {
         val.with(|val| {
@@ -52,7 +56,7 @@ pub fn SideItem(
 
     view! {
         <li class=class>
-            <A href=move || val.get().id on:click=on_click_note>{note_title}</A>
+            <A href=move || format!("{}/note/{}", current_user.get(), val.get().id) on:click=on_click_note>{note_title}</A>
             <form on:submit={on_click_delete}>
                 <button class="sidebar__item__del">"X"</button>
             </form>

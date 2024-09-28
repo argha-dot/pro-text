@@ -30,6 +30,16 @@
   width: 100%;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+}
+
 .login__form__input {
   padding: 0.5rem;
   display: flex;
@@ -51,6 +61,7 @@
 
   & > p {
     padding: 0;
+    z-index: 2;
   }
 
   &:focus-within, 
@@ -61,6 +72,7 @@
       background: #2c2c2c;
       transform: translate(-0.2rem, -1.23rem);
       font-size: 14px;
+      /* line-height: 16px; */
       transition: all 0.25s;
 
       padding: 0 0.5rem;

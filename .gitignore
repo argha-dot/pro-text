@@ -14,5 +14,6 @@ playwright/.cache/
 
 ignore/
 
+*.db
 *.db-shm
 *.db-wal

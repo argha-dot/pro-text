@@ -92,9 +92,7 @@ pub fn NoteMain() -> impl IntoView {
 
     view! {
         <form on:submit=on_save class="note__container">
-            <Transition fallback=move || {
-                view! { <p class="note__container__error">"Loading..."</p> }
-            }>
+            <Transition>
                 {move || {
                     data.get()
                         .map(|note| match note {

@@ -2,6 +2,8 @@
 
 This is a clone of [ProtectedText](https://www.protectedtext.com/) written in rust and [Leptos](https://leptos.dev/).
 
+##
+
 ## Todo
 
 - [x] Create Basic UI for notes and sidebar.
@@ -24,21 +26,14 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
     > ```
   - [X] Create the user table, API routes etc.
   - [X] The User and Note relationship etc.
-  - [ ] Extend the router with the user stuff
-    > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/{NOTE_ID}`
+  - [X] Extend the router with the user stuff
+    > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/note/{NOTE_ID}`
   - [ ] Option to create a new user if the URL isn't already taken
   - [ ] Set Password and Option to make it open i.e. set no password
-- [ ] The whole password authentication thing
-  - [ ] Encrypt notes and the username with the password.
-    > this is stored in the database.
-  - [ ] When the user tries to access the note, fetch the username hash, and ask for the password.
-  - [ ] Decrypt the username hash with the password taken from the user, and compare it to the username which is known from the url of the site.
-  - [ ] If the decrypted username and the actual username match, fetch the list of notes and everything and decrypt it using the password.
-    > For now I'm storing the password in a global app state, so that whenerer the page is refreshed or the tab is closed, the user has to login again, but the password is NOT stored in a cookie or local storage. Storing the password this way should not be a security risk, but I'll need to verify it somehow.
 
 ## FIX ME
  - [X] The Flickering of the sidebar.
- - [ ] The Login Form Input label thing
+ - [X] The Login Form Input label thing
 
 ### Extra Stuff
 
