@@ -1,9 +1,9 @@
+-- Add migration script here
+
 CREATE TABLE IF NOT EXISTS users (
 	username		TEXT NOT NULL UNIQUE PRIMARY KEY,
-	username_hash	TEXT DEFAULT NULL
+	password_hash	TEXT NOT NULL
 );
-
-DROP TABLE notes;
 
 CREATE TABLE notes (
 	id 		TEXT NOT NULL PRIMARY KEY,

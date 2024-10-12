@@ -27,6 +27,9 @@ uuid = { version = "1.7.0", features = ["v4", "fast-rng", "macro-diagnostics"] }
 leptos_query = { version = "0.5", features = ["local_storage", "indexed_db"]}
 leptos-use = "0.13"
 leptos_query_devtools = "0.1.3"
+dotenv = "0.15"
+argon2 = "0.5.3"
+jsonwebtoken = "9.3.0"
 
 # [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 

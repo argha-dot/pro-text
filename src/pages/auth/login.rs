@@ -25,8 +25,6 @@ pub fn LoginPage() -> impl IntoView {
                 Ok(user) => {
                     set_auth_state.set(AuthState::LoggedIn {
                         username: user.username,
-                        username_hash: "".to_string(),
-                        password: password.get(),
                     });
                     navigate("/", Default::default());
                 }

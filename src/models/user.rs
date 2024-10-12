@@ -4,5 +4,5 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct User {
     pub username: String,
-    pub username_hash: String,
+    pub password_hash: String,
 }

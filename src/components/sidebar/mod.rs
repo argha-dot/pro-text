@@ -8,7 +8,6 @@ pub use self::user_card::*;
 
 use leptos::*;
 use leptos_query::QueryResult;
-use leptos_router::*;
 
 use crate::api::delete_note;
 use crate::queries::{get_all_note_metadatas_query, get_note_query, AllNoteMetadatasTag};
@@ -18,11 +17,6 @@ use crate::utils::{get_username, set_current_note};
 pub fn Sidebar() -> impl IntoView {
     let (current_note, set_current_note) = set_current_note();
     let current_user = get_username();
-
-    let navigate = use_navigate();
-    if current_user.get().is_none() {
-        navigate("/login", Default::default());
-    }
 
     let QueryResult { data, refetch, .. } = get_all_note_metadatas_query().use_query(move || {
         (

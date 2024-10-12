@@ -22,13 +22,13 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
     >
     > ```
     >   username: String,
-    >   username_hash: String,
+    >   password_hash: String,
     > ```
   - [X] Create the user table, API routes etc.
   - [X] The User and Note relationship etc.
   - [X] Extend the router with the user stuff
     > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/note/{NOTE_ID}`
-  - [ ] Option to create a new user if the URL isn't already taken
+  - [X] Option to create a new user if the URL isn't already taken
   - [ ] Set Password and Option to make it open i.e. set no password
 
 ## FIX ME

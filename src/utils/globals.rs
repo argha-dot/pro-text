@@ -12,10 +12,15 @@ pub enum AuthState {
     LoggedOut,
     LoggedIn {
         username: String,
-        username_hash: String,
-        // The Password Stored Here never leaves the client machine, nor does it ever gets sent, hashed or otherwise to the server
-        password: String,
+        // TODO: make this access token or something
+        password_hash: String,
     },
+}
+
+impl AuthState {
+    pub fn is_logged_in(&self) -> bool {
+        matches!(self, AuthState::LoggedIn { .. })
+    }
 }
 
 pub fn auth_state() -> (Signal<AuthState>, SignalSetter<AuthState>) {
