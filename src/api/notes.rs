@@ -75,12 +75,12 @@ pub async fn add_note(title: String, user_id: String) -> Result<(), ServerFnErro
     match sqlx::query("INSERT INTO notes (id,title,note,user_id) VALUES ($1, $2, '', $3)")
         .bind(uid.clone())
         .bind(title)
-        .bind(user_id)
+        .bind(&user_id)
         .execute(&mut conn)
         .await
     {
         Ok(_row) => {
-            redirect(format!("{}", uid.clone()).as_str());
+            redirect(format!("{}/note/{}", &user_id, uid.clone()).as_str());
             Ok(())
         }
         Err(e) => Err(ServerFnError::ServerError(e.to_string())),
@@ -119,12 +119,12 @@ pub async fn delete_note(id: String, user_id: String) -> Result<(), ServerFnErro
 
     match sqlx::query("DELETE FROM notes WHERE id = $1 AND user_id = $2")
         .bind(id)
-        .bind(user_id)
+        .bind(&user_id)
         .execute(&mut conn)
         .await
     {
         Ok(_row) => {
-            leptos_axum::redirect("/");
+            leptos_axum::redirect(format!("/{}", user_id.clone()).as_str());
             Ok(())
         }
         Err(e) => Err(ServerFnError::ServerError(e.to_string())),

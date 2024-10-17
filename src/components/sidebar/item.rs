@@ -54,9 +54,16 @@ pub fn SideItem(
         delete_note.dispatch(val.get().id.clone())
     };
 
+    println!("{}", current_user.get());
+
     view! {
         <li class=class>
-            <A href=move || format!("{}/note/{}", current_user.get(), val.get().id) on:click=on_click_note>{note_title}</A>
+            <A
+                href=move || format!("note/{}", val.get().id)
+                on:click=on_click_note
+            >
+                {note_title}
+            </A>
             <form on:submit={on_click_delete}>
                 <button class="sidebar__item__del">"X"</button>
             </form>

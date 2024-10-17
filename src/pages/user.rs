@@ -5,7 +5,7 @@ use leptos_router::*;
 use crate::{
     api::{check_user_exists, create_user, login},
     components::Sidebar,
-    utils::{auth_state, AuthState, UserPageParams},
+    utils::{auth_state, AuthState, GlobalState, UserPageParams},
 };
 
 #[derive(Copy, Clone, PartialEq, Eq)]
@@ -193,6 +193,13 @@ fn LoggedOutView() -> impl IntoView {
 
 #[component]
 pub fn UserPage() -> impl IntoView {
+    let global_state = create_rw_signal(GlobalState {
+        auth: AuthState::LoggedOut,
+        current_note: None,
+    });
+
+    provide_context(global_state);
+
     let (auth_state, _) = auth_state();
 
     view! {

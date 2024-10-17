@@ -1,4 +1,3 @@
-use crate::utils::{AuthState, GlobalState};
 use crate::{
     components::NoteMain,
     error_template::{AppError, ErrorTemplate},
@@ -14,15 +13,9 @@ use crate::pages::*;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let global_state = create_rw_signal(GlobalState {
-        auth: AuthState::LoggedOut,
-        current_note: None,
-    });
-
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
     provide_query_client();
-    provide_context(global_state);
 
     view! {
         // injects a stylesheet into the document <head>
@@ -34,14 +27,16 @@ pub fn App() -> impl IntoView {
         <Title text="Pro Text"/>
 
         // content for this welcome page
-        <Router fallback=|| {
-            let mut outside_errors = Errors::default();
-            outside_errors.insert_with_default_key(AppError::NotFound);
-            view! {
-                <ErrorTemplate outside_errors/>
+        <Router
+            fallback=|| {
+                let mut outside_errors = Errors::default();
+                outside_errors.insert_with_default_key(AppError::NotFound);
+                view! {
+                    <ErrorTemplate outside_errors/>
+                }
+                .into_view()
             }
-            .into_view()
-        }>
+        >
             <main class="min-h-screen w-full bg-primary flex">
                 <Routes>
                     // Logged Out Routes

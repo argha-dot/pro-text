@@ -29,18 +29,24 @@ This is a clone of [ProtectedText](https://www.protectedtext.com/) written in ru
   - [X] Extend the router with the user stuff
     > The URL will now be something like `https://{ROOT_URL}/{USERNAME}/note/{NOTE_ID}`
   - [X] Option to create a new user if the URL isn't already taken
-  - [ ] Set Password and Option to make it open i.e. set no password
+  - [ ] Make a functioning auth
+  - [ ] Make Error States
+
+## The Actual Stuff
+ - [ ] Replace the giant textbox with a dynamic markdown editor thing.
+ - [ ] Steal UI from Notion.
+ - [ ] Links inside the notes should be navigable.
 
 ## FIX ME
  - [X] The Flickering of the sidebar.
  - [X] The Login Form Input label thing
+ - [X] The Router and everything
 
 ### Extra Stuff
-
-- [ ] Make the note downloadable.
 - [ ] Make importing notes a thing.
 - [ ] Make it save stuff as you type.
-- [ ] Replace the giant textbox with something like what [notion](https://notion.so) does.
+- [ ] Make the note downloadable.
+- [ ] PWA
 
 ## Executing a Server on a Remote Machine Without the Toolchain
 
