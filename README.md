@@ -1,10 +1,7 @@
-# Pro(tected) Text
+# Yet Another Wannabe Obsidian
+This is another note taking app thingy written in rust and [Leptos](https://leptos.dev/).
 
-This is a clone of [ProtectedText](https://www.protectedtext.com/) written in rust and [Leptos](https://leptos.dev/).
-
-##
-
-## Todo
+## TODO
 
 - [x] Create Basic UI for notes and sidebar.
 - [x] Create the Notes Schema.
